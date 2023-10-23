@@ -1,0 +1,24 @@
+{
+    "name": "artem/sxml",
+    "license": "MIT",
+    "autoload": {
+        "files": ["src/helpers.php"],
+        "psr-4": {
+            "Sxml\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dubrovskiy Artem",
+            "email": "dubisoft1520@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-mbstring": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.1"
+    }
+}
