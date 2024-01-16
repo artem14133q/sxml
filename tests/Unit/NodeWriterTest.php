@@ -93,7 +93,6 @@ class NodeWriterTest extends TestCase
     {
         $node = $this->getNode(true);
 
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals($this->getResult(0, false, true), $node->writer()->asText());
     }
 
@@ -113,7 +112,6 @@ class NodeWriterTest extends TestCase
             /** @var NodeWriter $writer */
             $writer = new $writerClass($node, $depth, true);
 
-            /** @noinspection PhpParamsInspection */
             $this->assertEquals($this->getResult($depth, true), $writer->asText());
         }
     }
@@ -124,7 +122,6 @@ class NodeWriterTest extends TestCase
      */
     public function testSerializeNodeBeautify(): void
     {
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals($this->getResult(0, true), $this->getNode()->writer()->beautify()->asText());
     }
 
@@ -134,7 +131,6 @@ class NodeWriterTest extends TestCase
      */
     public function testDumpNode(): void
     {
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals($this->getDump(), $this->getNode()->dump());
     }
 }

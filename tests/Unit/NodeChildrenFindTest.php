@@ -77,13 +77,9 @@ class NodeChildrenFindTest extends TestCase
 
         [$span, $a, $h1, $h2, $w_h2, $w_span] = $tree->getChildren();
 
-        /** @noinspection PhpParamsInspection */
         self::assertEquals([$span, $w_span], $tree->findByName('span'));
-        /** @noinspection PhpParamsInspection */
         self::assertEquals($a, $tree->findByName('a')[0]);
-        /** @noinspection PhpParamsInspection */
         self::assertEquals($h1, $tree->findByName('h1')[0]);
-        /** @noinspection PhpParamsInspection */
         self::assertEquals([$h2, $w_h2], $tree->findByName('h2'));
     }
 
@@ -99,7 +95,6 @@ class NodeChildrenFindTest extends TestCase
         $children = [$span, $h1, $h2];
         $find = $tree->findByName('w:');
 
-        /** @noinspection PhpParamsInspection */
         for ($i = 0; $i < count($children); ++$i) {
             self::assertEquals($children[$i], $find[$i]);
         }
@@ -112,7 +107,6 @@ class NodeChildrenFindTest extends TestCase
     {
         $tree = $this->createNodeTree();
 
-        /** @noinspection PhpParamsInspection */
         self::assertEquals($tree->getChildren()[4], $tree->findByName('w:h2')[0]);
     }
 }

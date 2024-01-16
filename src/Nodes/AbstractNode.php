@@ -75,7 +75,7 @@ abstract class AbstractNode implements NodeInterface
      * @param mixed $value
      * @return $this
      */
-    public function setOption(string $name, $value): self
+    public function setOption(string $name, mixed $value): self
     {
         $this->options[$name] = $value;
 
@@ -95,7 +95,7 @@ abstract class AbstractNode implements NodeInterface
      * @return void
      * @throws Exception
      */
-    protected function parseName(string $content)
+    protected function parseName(string $content): void
     {
         $prefix = null;
         $name = explode(":", $content, 2);
@@ -116,8 +116,8 @@ abstract class AbstractNode implements NodeInterface
     protected function parentOptions(): array
     {
         return [
-            'xmlns' => $this->options['xmlns'],
-            'depth' => $this->options['depth'] + 1,
+            'xmlns' => $this->options['xmlns'] ?? null,
+            'depth' => ($this->options['depth'] ?? 0) + 1,
         ];
     }
 
@@ -255,7 +255,7 @@ abstract class AbstractNode implements NodeInterface
      */
     private function arrayString(string $line): array
     {
-        $firstChar = $line[0];
+        $firstChar = substr($line, 0, 1);
         $lastChar = substr($line, -1);
 
         if ($firstChar == '[' && $lastChar == ']') {
@@ -325,14 +325,14 @@ abstract class AbstractNode implements NodeInterface
     {
         foreach ($find as $value) {
             $onStart = $value[0] == "%";
-            $onEnd = substr($value, -1) == "%";
+            $onEnd = str_ends_with($value, "%");
 
             if ($onStart || $onEnd) {
                 $value = str_replace("%", "", $value);
                 $countValue = count($value);
 
                 $result = array_map(function (string $data) use($value, $countValue, $onStart, $onEnd) {
-                    return strpos($value, $data) !== false
+                    return str_contains($value, $data)
                         && ($onStart || substr($data, 0, $countValue) == $value)
                         && ($onEnd || substr($data, -$countValue) == $value);
                 }, $in);
@@ -423,13 +423,13 @@ abstract class AbstractNode implements NodeInterface
             }
 
             $onStart = $value[0] == "%";
-            $onEnd = substr($value, -1) == "%";
+            $onEnd = str_ends_with($value, "%");
 
             if ($onStart || $onEnd) {
                 $value = str_replace("%", "", $value);
                 $countValue = count($value);
 
-                if (strpos($value, $data) !== false
+                if (str_contains($value, $data)
                     && ($onStart || substr($data, 0, $countValue) == $value)
                     && ($onEnd || substr($data, -$countValue) == $value)
                 ) {
@@ -453,20 +453,20 @@ abstract class AbstractNode implements NodeInterface
     }
 
     /**
-     * @param string|array|int $value
+     * @param int|array|string $value
      * @param int $searchType
      * @return array
      * @throws Exception
      */
-    public function find($value, int $searchType = self::SEARCH_NAME): array
+    public function find(int|array|string $value, int $searchType = self::SEARCH_NAME): array
     {
-        switch ($searchType) {
-            case self::SEARCH_NAME: return $this->findByName($value);
-            case self::SEARCH_ATTRIBUTES: return $this->findByAttributes($value);
-            case self::SEARCH_VALUE: return $this->findByValue($value);
-            case self::SEARCH_TYPE: return $this->findByType($value);
-            default: throw new Exception("Search type '$searchType' not defined");
-        }
+        return match ($searchType) {
+            self::SEARCH_NAME => $this->findByName($value),
+            self::SEARCH_ATTRIBUTES => $this->findByAttributes($value),
+            self::SEARCH_VALUE => $this->findByValue($value),
+            self::SEARCH_TYPE => $this->findByType($value),
+            default => throw new Exception("Search type '$searchType' not defined"),
+        };
     }
 
     /**

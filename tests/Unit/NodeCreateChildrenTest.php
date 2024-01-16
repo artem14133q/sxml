@@ -18,9 +18,7 @@ class NodeCreateChildrenTest extends TestCase
         $parent = new Node("div");
         $child = $parent->createChildNode('span', [], 'Value');
 
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals($parent->getChildren()[0]->dump(), $child->dump());
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals(AbstractNode::NODE_TYPE_FULL, $parent->getChildren()[0]->getType());
     }
 
@@ -32,9 +30,7 @@ class NodeCreateChildrenTest extends TestCase
         $parent = new Node("div");
         $child = $parent->createChildNode('a', ['href' => 'https://example.com']);
 
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals($parent->getChildren()[0]->dump(), $child->dump());
-        /** @noinspection PhpParamsInspection */
         $this->assertEquals(AbstractNode::NODE_TYPE_SINGLE, $parent->getChildren()[0]->getType());
     }
 }
