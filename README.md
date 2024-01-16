@@ -5,6 +5,9 @@ A simple php library for manage xml/html documents.
 ## Php version
 `^8.1`
 
+## Installation
+`composer require artem14133q/sxml`
+
 ## Usage
 ```php
 use Sxml\Documents\HtmlDocument;
