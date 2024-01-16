@@ -23,7 +23,7 @@ trait TagUuidTrait
      * @return void
      * @throws Exception
      */
-    protected function createUuid()
+    protected function createUuid(): void
     {
         $this->uuid = uuid();
     }

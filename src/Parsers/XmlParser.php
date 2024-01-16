@@ -64,14 +64,15 @@ class XmlParser extends Parser
     }
 
     /**
+     * @param array $tagData
      * @return void
      */
-    protected function parseXmlns(array $tagData)
+    protected function parseXmlns(array $tagData): void
     {
         $xmlns = [];
 
         foreach ($tagData[2] as $key => $value) {
-            if (strpos($key, 'xmlns:') !== 0) {
+            if (!str_starts_with($key, 'xmlns:')) {
                 continue;
             }
 

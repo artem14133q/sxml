@@ -46,7 +46,7 @@ abstract class Parser
      * @param callable $callback
      * @return void
      */
-    public function installCallback(callable $callback)
+    public function installCallback(callable $callback): void
     {
         $this->callback = $callback;
     }
@@ -84,7 +84,7 @@ abstract class Parser
         [$depth, $queue, $nodes, $tags] = [0, [], [], $matches[0]];
 
         foreach ($tags as $i => [$tagContent, $tagPos]) {
-            if ((substr($tagContent, 0, 4) === '<!--') && (substr($tagContent, -3) === '-->')) {
+            if ((str_starts_with($tagContent, '<!--')) && (str_ends_with($tagContent, '-->'))) {
                 continue;
             }
 
@@ -161,7 +161,7 @@ abstract class Parser
      * @return mixed
      * @throws Exception
      */
-    protected function parseTagsException(string $tagName, int $pos)
+    protected function parseTagsException(string $tagName, int $pos): mixed
     {
         throw new Exception("Got close tag `$tagName` on $pos, but open tag not found.");
     }
