@@ -1,5 +1,6 @@
 {
-    "name": "artem/sxml",
+    "name": "artem14133q/sxml",
+    "description": "A simple php library for manage xml/html documents.",
     "license": "MIT",
     "autoload": {
         "files": ["src/helpers.php"],
