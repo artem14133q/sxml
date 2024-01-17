@@ -30,8 +30,8 @@ $html = "
 
 $doc = HtmlDocument($html);
 
-$body = $doc->getHtmlNode()->findByName("body");
-$div = $body->findByName("div");
+$body = $doc->getHtmlNode()->findByName("body")[0];
+$div = $body->findByName("div")[0];
 
 $div->setValue("Hello SXML!");
 
