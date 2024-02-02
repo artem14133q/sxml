@@ -3,7 +3,15 @@
 namespace Sxml\Documents;
 
 use Exception;
-use Sxml\Nodes\{AbstractNode, Html\DoctypeNode, Node, NodeInterface, SingleNode, Traits\TagUuidTrait};
+use Sxml\Nodes\{
+    AbstractNode,
+    Enums\NodeType,
+    Html\DoctypeNode,
+    Node,
+    NodeInterface,
+    SingleNode,
+    Traits\TagUuidTrait
+};
 use Sxml\Parsers\HtmlParser;
 use Sxml\Writers\Html\HtmlDocumentWriter;
 
@@ -127,8 +135,8 @@ class HtmlDocument implements NodeInterface
         return new HtmlDocumentWriter($this);
     }
 
-    public function getType(): int
+    public function getType(): NodeType
     {
-        return AbstractNode::NODE_TYPE_ROOT;
+        return NodeType::Root;
     }
 }

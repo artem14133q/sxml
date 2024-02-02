@@ -2,6 +2,7 @@
 
 namespace Sxml\Nodes;
 
+use Sxml\Nodes\Enums\NodeType;
 use Sxml\Writers\WriterInterface;
 
 interface NodeInterface
@@ -52,7 +53,7 @@ interface NodeInterface
     public function writer(): WriterInterface;
 
     /**
-     * @return int
+     * @return NodeType
      */
-    public function getType(): int;
+    public function getType(): NodeType;
 }

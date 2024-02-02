@@ -3,7 +3,7 @@
 namespace Sxml\Documents;
 
 use Exception;
-use Sxml\Nodes\{AbstractNode, Node, NodeInterface, SingleNode, Traits\TagUuidTrait};
+use Sxml\Nodes\{AbstractNode, Enums\NodeType, Node, NodeInterface, SingleNode, Traits\TagUuidTrait};
 use Sxml\Parsers\XmlParser;
 use Sxml\Writers\Xml\XmlDocumentWriter;
 
@@ -134,8 +134,8 @@ class XmlDocument implements NodeInterface
         return new XmlDocumentWriter($this);
     }
 
-    public function getType(): int
+    public function getType(): NodeType
     {
-        return AbstractNode::NODE_TYPE_ROOT;
+        return NodeType::Root;
     }
 }

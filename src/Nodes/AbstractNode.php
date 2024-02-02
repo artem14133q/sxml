@@ -2,21 +2,14 @@
 
 namespace Sxml\Nodes;
 
+use Sxml\Nodes\Enums\NodeType;
+use Sxml\Nodes\Enums\SearchBy;
 use Sxml\Nodes\Traits\TagUuidTrait;
 use Sxml\Writers\AbstractWriter;
 use Exception;
 
 abstract class AbstractNode implements NodeInterface
 {
-    public const SEARCH_NAME = 1;
-    public const SEARCH_ATTRIBUTES = 2;
-    public const SEARCH_VALUE = 3;
-    public const SEARCH_TYPE = 4;
-
-    public const NODE_TYPE_SINGLE = 1;
-    public const NODE_TYPE_FULL = 2;
-    public const NODE_TYPE_ROOT = 3;
-
     use TagUuidTrait;
 
     /**
@@ -40,9 +33,9 @@ abstract class AbstractNode implements NodeInterface
     protected ?string $value = null;
 
     /**
-     * @var int
+     * @var NodeType
      */
-    protected int $type;
+    protected NodeType $type;
 
     /**
      * @var array
@@ -50,7 +43,7 @@ abstract class AbstractNode implements NodeInterface
     protected array $options;
 
     /**
-     * @param int $type
+     * @param NodeType $type
      * @param string $name
      * @param array $attributes
      * @param string|null $value
@@ -58,7 +51,7 @@ abstract class AbstractNode implements NodeInterface
      * @throws Exception
      */
     public function __construct(
-        int $type, string $name, array $attributes = [], ?string $value = null, array $options = []
+        NodeType $type, string $name, array $attributes = [], ?string $value = null, array $options = []
     ) {
         $this->options = $options;
         $this->type = $type;
@@ -210,9 +203,9 @@ abstract class AbstractNode implements NodeInterface
     }
 
     /**
-     * @return int
+     * @return NodeType
      */
-    public function getType(): int
+    public function getType(): NodeType
     {
         return $this->type;
     }
@@ -414,7 +407,7 @@ abstract class AbstractNode implements NodeInterface
     public function findByValue(string $value, bool $empty = false): array
     {
         return array_filter($this->children, function (AbstractNode $node) use($empty, $value) {
-            if ($this->type != self::NODE_TYPE_FULL) {
+            if ($this->type != NodeType::Full) {
                 return false;
             }
 
@@ -454,18 +447,17 @@ abstract class AbstractNode implements NodeInterface
 
     /**
      * @param int|array|string $value
-     * @param int $searchType
+     * @param SearchBy $searchBy
      * @return array
      * @throws Exception
      */
-    public function find(int|array|string $value, int $searchType = self::SEARCH_NAME): array
+    public function find(int|array|string $value, SearchBy $searchBy = SearchBy::Name): array
     {
-        return match ($searchType) {
-            self::SEARCH_NAME => $this->findByName($value),
-            self::SEARCH_ATTRIBUTES => $this->findByAttributes($value),
-            self::SEARCH_VALUE => $this->findByValue($value),
-            self::SEARCH_TYPE => $this->findByType($value),
-            default => throw new Exception("Search type '$searchType' not defined"),
+        return match ($searchBy) {
+            SearchBy::Name => $this->findByName($value),
+            SearchBy::Attributes => $this->findByAttributes($value),
+            SearchBy::Value => $this->findByValue($value),
+            SearchBy::Type => $this->findByType($value),
         };
     }
 

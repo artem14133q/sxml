@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Sxml\Nodes\AbstractNode;
+use Sxml\Nodes\Enums\NodeType;
 use Sxml\Nodes\Node;
 
 class NodeCreateChildrenTest extends TestCase
@@ -19,7 +19,7 @@ class NodeCreateChildrenTest extends TestCase
         $child = $parent->createChildNode('span', [], 'Value');
 
         $this->assertEquals($parent->getChildren()[0]->dump(), $child->dump());
-        $this->assertEquals(AbstractNode::NODE_TYPE_FULL, $parent->getChildren()[0]->getType());
+        $this->assertEquals(NodeType::Full, $parent->getChildren()[0]->getType());
     }
 
     /**
@@ -31,6 +31,6 @@ class NodeCreateChildrenTest extends TestCase
         $child = $parent->createChildNode('a', ['href' => 'https://example.com']);
 
         $this->assertEquals($parent->getChildren()[0]->dump(), $child->dump());
-        $this->assertEquals(AbstractNode::NODE_TYPE_SINGLE, $parent->getChildren()[0]->getType());
+        $this->assertEquals(NodeType::Single, $parent->getChildren()[0]->getType());
     }
 }

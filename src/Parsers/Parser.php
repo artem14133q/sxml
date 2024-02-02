@@ -2,9 +2,10 @@
 
 namespace Sxml\Parsers;
 
+use Exception;
 use Sxml\Nodes\Node;
 use Sxml\Nodes\SingleNode;
-use Exception;
+use Sxml\Parsers\Enums\TagType;
 
 abstract class Parser
 {
@@ -12,10 +13,6 @@ abstract class Parser
 
     protected const TAGS_PATTERN = "/<[^>]+>/";
     protected const TAG_ATTRIBUTES_PATTERN = "/\s[^=\s>]+(?:=\"[^\"]*\")?/";
-
-    public const TYPE_OPEN = 1;
-    public const TYPE_CLOSE = 2;
-    public const TYPE_SINGLE = 3;
 
     /**
      * @var string
@@ -90,13 +87,13 @@ abstract class Parser
 
             $tagData = [$name, $type, $attributes] = $this->parseTag($tagContent);
 
-            if ($type == self::TYPE_SINGLE) {
+            if ($type == TagType::Single) {
                 $nodes[$depth][] = new SingleNode($name, $attributes, $this->getOptions(['depth' => $depth]));
 
                 continue;
             }
 
-            if ($type == self::TYPE_OPEN) {
+            if ($type == TagType::Open) {
                 $queue[$depth++] = array_merge($tagData, [$tagPos, mb_strlen($tagContent)]);
 
                 /** @var $callback callable */
@@ -198,8 +195,8 @@ abstract class Parser
         $hasStartChar = $content[0] == self::BS;
         $hasEndChar = substr($content, -1) == self::BS;
 
-        $type = $hasStartChar ? self::TYPE_CLOSE : (
-            $hasEndChar ? self::TYPE_SINGLE : self::TYPE_OPEN
+        $type = $hasStartChar ? TagType::Close : (
+            $hasEndChar ? TagType::Single : TagType::Open
         );
 
         $args = [$content, $hasStartChar ? 1 : 0];
@@ -211,7 +208,7 @@ abstract class Parser
         $name = explode(" ", substr(...$args))[0];
 
         if (in_array($name, $this->parameters['unpaired'] ?? [])) {
-            $type = self::TYPE_SINGLE;
+            $type = TagType::Single;
         }
 
         $attributes = $this->parseAttributesTag($content);

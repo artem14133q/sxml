@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Sxml\Nodes\AbstractNode;
 use Sxml\Nodes\Node;
 
 class NodeChildrenFindTest extends TestCase
@@ -14,41 +13,41 @@ class NodeChildrenFindTest extends TestCase
 
     protected const TREE = [
         self::PREFIX_W . ':span' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['col' => '1', 'row' => '2'],
             'value' => 'Text'
         ],
         'a' => [
-            'type' => AbstractNode::NODE_TYPE_SINGLE,
+            'single' => true,
             'attr' => ['href' => 'https://example.com'],
         ],
         self::PREFIX_W . ':h1' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['style' => 'text-weight: bold;', 'col' => '12', 'row' => '1'],
             'value' => 'Title'
         ],
         'h2' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['style' => 'text-weight: bold;', 'col' => '12'],
             'value' => 'Small Title',
         ],
         self::PREFIX_W . ':h2' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['style' => 'text-weight: bold;', 'col' => '12'],
             'value' => 'Small Title 2',
         ],
         self::PREFIX_A . ':span' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['class' => 'title'],
             'value' => 'text',
         ],
         self::PREFIX_A . ':div' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['style' => 'text-weight: normal;', 'col' => '6'],
             'value' => 'Block',
         ],
         self::PREFIX_A . ':form' => [
-            'type' => AbstractNode::NODE_TYPE_FULL,
+            'single' => false,
             'attr' => ['action' => 'https://example.com', 'method' => 'POST'],
         ],
     ];
@@ -61,7 +60,7 @@ class NodeChildrenFindTest extends TestCase
         $parent = (new Node('body'))->setOption('xmlns', [self::PREFIX_W => true, self::PREFIX_A => true]);
 
         foreach (self::TREE as $name => $parameters) {
-            $parent->createChildNode($name, $parameters['attr'], $parameters['value'] ?? null, $parameters['type']);
+            $parent->createChildNode($name, $parameters['attr'], $parameters['value'] ?? null, $parameters['single']);
         }
 
         return $parent;

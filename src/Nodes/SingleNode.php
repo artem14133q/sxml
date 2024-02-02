@@ -2,6 +2,7 @@
 
 namespace Sxml\Nodes;
 
+use Sxml\Nodes\Enums\NodeType;
 use Sxml\Writers\SingleNodeWriter;
 use Exception;
 
@@ -15,7 +16,7 @@ class SingleNode extends AbstractNode
      */
     public function __construct(string $name, array $attributes = [], array $options = [])
     {
-        parent::__construct(AbstractNode::NODE_TYPE_SINGLE, $name, $attributes, null, $options);
+        parent::__construct(NodeType::Single, $name, $attributes, null, $options);
     }
 
     /**
